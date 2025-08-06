@@ -74,6 +74,26 @@ struct WebView: UIViewRepresentable {
         let cssInjectionScript = WKUserScript(source: cssInjectionScriptSource, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
         configuration.userContentController.addUserScript(cssInjectionScript)
         
+        // 「Show More Locations」ボタンを押し続けるJavaScript
+        let showMoreScriptSource = """
+        function clickShowMore() {
+            const buttons = document.querySelectorAll('button');
+            let clicked = false;
+            for (let i = 0; i < buttons.length; i++) {
+                if (buttons[i].textContent.trim() === 'Show More Locations') {
+                    buttons[i].click();
+                    clicked = true;
+                    break;
+                }
+            }
+            // ボタンが見つからなくても、常に再試行する
+            setTimeout(clickShowMore, 500); // 0.1秒後に再度実行
+        }
+        window.addEventListener('load', clickShowMore);
+        """
+        let showMoreScript = WKUserScript(source: showMoreScriptSource, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
+        configuration.userContentController.addUserScript(showMoreScript)
+        
         let webView = WKWebView(frame: .zero, configuration: configuration)
         webView.navigationDelegate = context.coordinator
         webView.uiDelegate = context.coordinator // Set the UI delegate
