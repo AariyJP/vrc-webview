@@ -62,8 +62,17 @@ struct WebView: UIViewRepresentable {
         document.head.appendChild(meta);
         """
         // WKUserScriptを作成し、configurationに追加
-        let userScript = WKUserScript(source: scriptSource, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
-        configuration.userContentController.addUserScript(userScript)
+        let viewportScript = WKUserScript(source: scriptSource, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
+        configuration.userContentController.addUserScript(viewportScript)
+        
+        // CSSを注入するJavaScript
+        let cssInjectionScriptSource = """
+        var style = document.createElement('style');
+        style.innerHTML = '.home-content { padding-right: 20px !important; }';
+        document.head.appendChild(style);
+        """
+        let cssInjectionScript = WKUserScript(source: cssInjectionScriptSource, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
+        configuration.userContentController.addUserScript(cssInjectionScript)
         
         let webView = WKWebView(frame: .zero, configuration: configuration)
         webView.navigationDelegate = context.coordinator
