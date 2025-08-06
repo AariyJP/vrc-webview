@@ -41,12 +41,10 @@ struct ContentView: View {
                     }
                 }
                 if isLoading {
-                    ProgressView()
-                        .progressViewStyle(CircularProgressViewStyle(tint: .gray))
-                        .scaleEffect(2.0)
+                    ProgressView().scaleEffect(2.0)
                 }
                     
-            }
+            }.background(appColor)
 //        }
     }
 }
