@@ -68,7 +68,7 @@ struct WebView: UIViewRepresentable {
         // CSSを注入するJavaScript
         let cssInjectionScriptSource = """
         var style = document.createElement('style');
-        style.innerHTML = '.home-content { padding-right: 20px !important; }';
+        style.innerHTML = '.home-content { padding-right: 20px !important; } * { -webkit-tap-highlight-color: transparent !important; }';
         document.head.appendChild(style);
         """
         let cssInjectionScript = WKUserScript(source: cssInjectionScriptSource, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
@@ -86,8 +86,7 @@ struct WebView: UIViewRepresentable {
                     break;
                 }
             }
-            // ボタンが見つからなくても、常に再試行する
-            setTimeout(clickShowMore, 500); // 0.1秒後に再度実行
+            setTimeout(clickShowMore, 500);
         }
         window.addEventListener('load', clickShowMore);
         """
