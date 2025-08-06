@@ -21,8 +21,11 @@ struct ContentView: View {
                     let statusBarHeight = UIApplication.shared.statusBarFrame.height
                     let appHeight = screenHeight - statusBarHeight
                     GeometryReader { geometry in
-                        WebView(url: websiteURL, isLoading: $isLoading, reloadTrigger: webViewReloadTrigger)
-                            .background(appColor)
+                        WebView(url: websiteURL, isLoading: $isLoading, reloadTrigger: webViewReloadTrigger, onLoadCompletion: {
+                            isLoading = false
+                        })
+                        .opacity(isLoading ? 0.25 : 1)
+                        .background(appColor)
                     }
                     .frame(minHeight: appHeight)
                     .background(appColor)
@@ -31,7 +34,11 @@ struct ContentView: View {
                 .ignoresSafeArea(edges: .bottom)
                 .background(appColor)
                 .refreshable {
+                    isLoading = true
                     webViewReloadTrigger.toggle()
+                    while isLoading {
+                        await Task.yield()
+                    }
                 }
                 if isLoading {
                     ProgressView()

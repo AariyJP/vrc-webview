@@ -6,7 +6,8 @@ struct WebView: UIViewRepresentable {
     let url: URL
     @Binding var isLoading: Bool
     let reloadTrigger: Bool
-    
+    var onLoadCompletion: (() -> Void)? // Add new completion handler
+
     class Coordinator: NSObject, WKNavigationDelegate, WKUIDelegate {
         var parent: WebView
         var lastReloadTrigger: Bool = false
@@ -22,14 +23,17 @@ struct WebView: UIViewRepresentable {
         
         func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
             parent.isLoading = false
+            parent.onLoadCompletion?() // Call completion handler on finish
         }
         
         func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
             parent.isLoading = false
+            parent.onLoadCompletion?() // Call completion handler on fail
         }
         
         func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
             parent.isLoading = false
+            parent.onLoadCompletion?() // Call completion handler on fail
         }
         
         func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
