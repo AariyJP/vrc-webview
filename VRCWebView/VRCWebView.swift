@@ -36,7 +36,7 @@ struct WebView: UIViewRepresentable {
             if navigationAction.targetFrame == nil {
                 if let url = navigationAction.request.url {
                     let safariViewController = SFSafariViewController(url: url)
-//                    safariViewController.modalPresentationStyle = .pageSheet
+                    safariViewController.modalPresentationStyle = .pageSheet
                     self.viewController?.present(safariViewController, animated: true)
                 }
             }
