@@ -6,7 +6,8 @@ struct WebView: UIViewRepresentable {
     let url: URL
     @Binding var isLoading: Bool
     let reloadTrigger: Bool
-    var onLoadCompletion: (() -> Void)? // Add new completion handler
+    var onLoadCompletion: (() -> Void)?
+    var javaScriptToInject: String? = nil // New parameter
 
     class Coordinator: NSObject, WKNavigationDelegate, WKUIDelegate {
         var parent: WebView
@@ -23,17 +24,17 @@ struct WebView: UIViewRepresentable {
         
         func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
             parent.isLoading = false
-            parent.onLoadCompletion?() // Call completion handler on finish
+            parent.onLoadCompletion?()
         }
         
         func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
             parent.isLoading = false
-            parent.onLoadCompletion?() // Call completion handler on fail
+            parent.onLoadCompletion?()
         }
         
         func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
             parent.isLoading = false
-            parent.onLoadCompletion?() // Call completion handler on fail
+            parent.onLoadCompletion?()
         }
         
         func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
@@ -68,7 +69,7 @@ struct WebView: UIViewRepresentable {
         // CSSを注入するJavaScript
         let cssInjectionScriptSource = """
         var style = document.createElement('style');
-        style.innerHTML = '.home-content { padding-right: 20px !important; } * { -webkit-tap-highlight-color: transparent !important; }';
+        style.innerHTML = '.home-content { padding-right: 20px !important; } * { -webkit-tap-highlight-color: transparent !important; } main > div.css-1hxlrwo > div:nth-child(1) { display: none; } .content-scroll { top: 0 !important; height: auto; } .rightbar { transition: none !important; }';
         document.head.appendChild(style);
         """
         let cssInjectionScript = WKUserScript(source: cssInjectionScriptSource, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
@@ -92,6 +93,12 @@ struct WebView: UIViewRepresentable {
         """
         let showMoreScript = WKUserScript(source: showMoreScriptSource, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
         configuration.userContentController.addUserScript(showMoreScript)
+        
+        // Inject custom JavaScript if provided
+        if let js = javaScriptToInject {
+            let customScript = WKUserScript(source: js, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
+            configuration.userContentController.addUserScript(customScript)
+        }
         
         let webView = WKWebView(frame: .zero, configuration: configuration)
         webView.navigationDelegate = context.coordinator
