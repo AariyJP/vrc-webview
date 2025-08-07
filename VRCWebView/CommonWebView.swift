@@ -20,7 +20,7 @@ struct CommonWebView: View {
             ScrollView {
                 let screenHeight = UIScreen.main.bounds.height
                 let statusBarHeight = UIApplication.shared.statusBarFrame.height
-                let appHeight = screenHeight - statusBarHeight  
+                let appHeight = screenHeight - statusBarHeight
                 GeometryReader { geometry in
                     WebView(url: websiteURL, isLoading: $isLoading, zoomScale: $zoomScale, reloadTrigger: webViewReloadTrigger, onLoadCompletion: {
                         isLoading = false
@@ -28,7 +28,7 @@ struct CommonWebView: View {
                     .opacity(isLoading ? 0 : 1)
                     .background(appColor)
                 }
-                .frame(minHeight: appHeight)
+                .frame(minHeight: appHeight - 60)
                 .background(appColor)
             }
             .ignoresSafeArea(edges: .bottom)

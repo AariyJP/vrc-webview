@@ -6,7 +6,6 @@ struct ProfileView: View {
     @State private var webViewReloadTrigger = false
     @State private var zoomScale = 0.8
     @State private var jsToExecute: String? = nil // New state for JS execution
-    @State private var editState = false
     
     var body: some View {
         NavigationStack {
