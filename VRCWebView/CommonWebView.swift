@@ -6,6 +6,7 @@ struct CommonWebView: View {
     let websiteURL: URL
     @Binding var isLoading: Bool
     @Binding var webViewReloadTrigger: Bool
+    @Binding var zoomScale: Double
     var javaScriptToInject: String? = nil // New parameter
     let appColor = Color(
         red: 7/255.0,
@@ -20,7 +21,7 @@ struct CommonWebView: View {
                 let statusBarHeight = UIApplication.shared.statusBarFrame.height
                 let appHeight = screenHeight - statusBarHeight
                 GeometryReader { geometry in
-                    WebView(url: websiteURL, isLoading: $isLoading, reloadTrigger: webViewReloadTrigger, onLoadCompletion: {
+                    WebView(url: websiteURL, isLoading: $isLoading, zoomScale: $zoomScale, reloadTrigger: webViewReloadTrigger, onLoadCompletion: {
                         isLoading = false
                     }, javaScriptToInject: javaScriptToInject) // Pass new parameter
                     .opacity(isLoading ? 0.25 : 1)

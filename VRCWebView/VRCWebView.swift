@@ -5,6 +5,7 @@ import SafariServices
 struct WebView: UIViewRepresentable {
     let url: URL
     @Binding var isLoading: Bool
+    @Binding var zoomScale: Double
     let reloadTrigger: Bool
     var onLoadCompletion: (() -> Void)?
     var javaScriptToInject: String? = nil // New parameter
@@ -55,44 +56,18 @@ struct WebView: UIViewRepresentable {
     
     func makeUIView(context: Context) -> WKWebView {
         let configuration = WKWebViewConfiguration()
-        // 拡大縮小を無効にするJavaScript
-        let scriptSource = """
+        configuration.userContentController.addUserScript(WKUserScript(source: """
         var meta = document.createElement('meta');
         meta.name = 'viewport';
-        meta.content = 'width=device-width, initial-scale=0.55, user-scalable=no';
+        meta.content = 'width=device-width, initial-scale=\(zoomScale), user-scalable=no';
         document.head.appendChild(meta);
-        """
-        // WKUserScriptを作成し、configurationに追加
-        let viewportScript = WKUserScript(source: scriptSource, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
-        configuration.userContentController.addUserScript(viewportScript)
-        
-        // CSSを注入するJavaScript
-        let cssInjectionScriptSource = """
-        var style = document.createElement('style');
-        style.innerHTML = '.home-content { padding-right: 20px !important; } * { -webkit-tap-highlight-color: transparent !important; } main > div.css-1hxlrwo > div:nth-child(1) { display: none; } .content-scroll { top: 0 !important; height: auto; } .rightbar { transition: none !important; }';
-        document.head.appendChild(style);
-        """
-        let cssInjectionScript = WKUserScript(source: cssInjectionScriptSource, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
-        configuration.userContentController.addUserScript(cssInjectionScript)
-        
-        // 「Show More Locations」ボタンを押し続けるJavaScript
-        let showMoreScriptSource = """
-        function clickShowMore() {
-            const buttons = document.querySelectorAll('button');
-            let clicked = false;
-            for (let i = 0; i < buttons.length; i++) {
-                if (buttons[i].textContent.trim() === 'Show More Locations') {
-                    buttons[i].click();
-                    clicked = true;
-                    break;
-                }
-            }
-            setTimeout(clickShowMore, 500);
+        """, injectionTime: .atDocumentEnd, forMainFrameOnly: true))
+        do {
+            let injectJs = try String(contentsOfFile: Bundle.main.path(forResource: "inject", ofType: "js")! , encoding: .utf8)
+            configuration.userContentController.addUserScript(WKUserScript(source: injectJs, injectionTime: .atDocumentEnd, forMainFrameOnly: true))
         }
-        window.addEventListener('load', clickShowMore);
-        """
-        let showMoreScript = WKUserScript(source: showMoreScriptSource, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
-        configuration.userContentController.addUserScript(showMoreScript)
+        catch {}
+        
         
         // Inject custom JavaScript if provided
         if let js = javaScriptToInject {
@@ -106,7 +81,8 @@ struct WebView: UIViewRepresentable {
         webView.allowsBackForwardNavigationGestures = true
         webView.allowsLinkPreview = true
         webView.isInspectable = true
-        
+        webView.backgroundColor = .clear
+        webView.isOpaque = false
         DispatchQueue.main.async {
             context.coordinator.viewController = webView.window?.rootViewController
         }

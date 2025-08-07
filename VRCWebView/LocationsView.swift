@@ -4,6 +4,8 @@ struct LocationsView: View {
     let websiteURL = URL(string: "https://vrchat.com/home")!
     @State private var isLoading = false
     @State private var webViewReloadTrigger = false
+    @State private var zoomScale = 0.55
+    
     
     var body: some View {
     // 「Show More Locations」ボタンを押し続けるJavaScript
@@ -22,7 +24,7 @@ struct LocationsView: View {
         }
         window.addEventListener('load', clickShowMore);
         """
-        CommonWebView(websiteURL: websiteURL, isLoading: $isLoading, webViewReloadTrigger: $webViewReloadTrigger, javaScriptToInject: js)
+        CommonWebView(websiteURL: websiteURL, isLoading: $isLoading, webViewReloadTrigger: $webViewReloadTrigger, zoomScale: $zoomScale, javaScriptToInject: js)
     }
 }
 
