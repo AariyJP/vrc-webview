@@ -26,14 +26,6 @@ struct LocationsView: View {
             window.addEventListener('load', clickShowMore);
             """
             CommonWebView(websiteURL: websiteURL, isLoading: $isLoading, webViewReloadTrigger: $webViewReloadTrigger, zoomScale: $zoomScale, javaScriptToInject: js, javaScriptToExecute: $jsToExecute)
-            
-            Button("Execute JS (Locations)") {
-                jsToExecute = "alert('Hello from LocationsView!');"
-            }
-            .padding()
-            .background(Color.orange)
-            .foregroundColor(.white)
-            .cornerRadius(10)
         }
     }
 }

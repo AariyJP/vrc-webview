@@ -4,22 +4,30 @@ struct ContentView: View {
     var body: some View {
         TabView {
 //            HomeView()
-            LocationsView()
+            NavigationStack {
+                LocationsView()
+            }
                 .tabItem {
                     Label("Locations", systemImage: "map.fill")
                 }
-            FriendsView()
+            NavigationStack {
+                FriendsView()
+            }
                 .tabItem {
                     Label("Friends", systemImage: "person.3.fill")
                 }
-            MessagesView()
+            NavigationStack {
+                MessagesView()
+            }
                 .tabItem {
                     Label("Messages", systemImage: "message.fill")
                 }
-            ProfileView()
-                .tabItem {
-                    Label("Profile", systemImage: "person.fill")
-                }
+            NavigationStack {
+                ProfileView()
+            }
+            .tabItem {
+                Label("Profile", systemImage: "person.fill")
+            }
 //            SettingsView()
 //                .tabItem {
 //                    Label("Settings", systemImage: "gear")

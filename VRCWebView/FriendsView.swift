@@ -20,17 +20,6 @@ struct FriendsView: View {
             window.addEventListener('load', clickFriendsButton);
             """
             CommonWebView(websiteURL: websiteURL, isLoading: $isLoading, webViewReloadTrigger: $webViewReloadTrigger, zoomScale: $zoomScale, javaScriptToInject: friendsButtonScript, javaScriptToExecute: $jsToExecute)
-            
-            Button("Execute JS (Friends)") {
-                jsToExecute = "alert('Hello from FriendsView!');"
-            }
-            .padding()
-            .background(Color.green)
-            .foregroundColor(.white)
-            .cornerRadius(10)
-        }
-        .tabItem {
-            Label("Friends", systemImage: "person.3.fill")
         }
     }
 }

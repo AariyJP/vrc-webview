@@ -6,21 +6,20 @@ struct ProfileView: View {
     @State private var webViewReloadTrigger = false
     @State private var zoomScale = 0.8
     @State private var jsToExecute: String? = nil // New state for JS execution
+    @State private var editState = false
     
     var body: some View {
-        VStack {
+        ZStack {
             CommonWebView(websiteURL: websiteURL, isLoading: $isLoading, webViewReloadTrigger: $webViewReloadTrigger, zoomScale: $zoomScale, javaScriptToExecute: $jsToExecute)
-            
-            Button("Execute JS") {
-                jsToExecute = "location.href=\"https://yahoo.co.jp\""
-            }
-            .padding()
-            .background(Color.blue)
-            .foregroundColor(.white)
-            .cornerRadius(10)
         }
-        .tabItem {
-            Label("Profile", systemImage: "person.fill")
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button {
+                    jsToExecute = "document.querySelector('[aria-label=\"Edit Profile\"]').click();"
+                } label: {
+                    Image(systemName: "pencil")
+                }
+            }
         }
     }
 }

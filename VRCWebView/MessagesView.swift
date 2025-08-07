@@ -10,17 +10,6 @@ struct MessagesView: View {
     var body: some View {
         VStack {
             CommonWebView(websiteURL: websiteURL, isLoading: $isLoading, webViewReloadTrigger: $webViewReloadTrigger, zoomScale: $zoomScale, javaScriptToExecute: $jsToExecute)
-            
-            Button("Execute JS (Messages)") {
-                jsToExecute = "alert('Hello from MessagesView!');"
-            }
-            .padding()
-            .background(Color.purple)
-            .foregroundColor(.white)
-            .cornerRadius(10)
-        }
-        .tabItem {
-            Label("Messages", systemImage: "message.fill")
         }
     }
 }
