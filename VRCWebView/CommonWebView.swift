@@ -8,6 +8,7 @@ struct CommonWebView: View {
     @Binding var webViewReloadTrigger: Bool
     @Binding var zoomScale: Double
     var javaScriptToInject: String? = nil // New parameter
+    @Binding var javaScriptToExecute: String? // New parameter for executing JS
     let appColor = Color(
         red: 7/255.0,
         green: 36/255.0,
@@ -23,7 +24,7 @@ struct CommonWebView: View {
                 GeometryReader { geometry in
                     WebView(url: websiteURL, isLoading: $isLoading, zoomScale: $zoomScale, reloadTrigger: webViewReloadTrigger, onLoadCompletion: {
                         isLoading = false
-                    }, javaScriptToInject: javaScriptToInject) // Pass new parameter
+                    }, javaScriptToInject: javaScriptToInject, javaScriptToExecute: $javaScriptToExecute) // Pass new parameter
                     .opacity(isLoading ? 0.25 : 1)
                     .background(appColor)
                 }

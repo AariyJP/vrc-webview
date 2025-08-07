@@ -9,6 +9,7 @@ struct WebView: UIViewRepresentable {
     let reloadTrigger: Bool
     var onLoadCompletion: (() -> Void)?
     var javaScriptToInject: String? = nil // New parameter
+    @Binding var javaScriptToExecute: String? // New parameter for executing JS
 
     class Coordinator: NSObject, WKNavigationDelegate, WKUIDelegate {
         var parent: WebView
@@ -97,5 +98,18 @@ struct WebView: UIViewRepresentable {
             uiView.reload()
         }
         context.coordinator.lastReloadTrigger = reloadTrigger
+        
+        // Execute JavaScript if provided
+        if let js = javaScriptToExecute {
+            uiView.evaluateJavaScript(js) { result, error in
+                if let error = error {
+                    print("Error executing JavaScript: \(error)")
+                }
+                // Clear the JavaScript after execution
+                DispatchQueue.main.async {
+                    self.javaScriptToExecute = nil
+                }
+            }
+        }
     }
 }

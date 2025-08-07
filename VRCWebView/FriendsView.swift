@@ -5,19 +5,30 @@ struct FriendsView: View {
     @State private var isLoading = false
     @State private var webViewReloadTrigger = false
     @State private var zoomScale = 0.8
+    @State private var jsToExecute: String? = nil // New state for JS execution
     
     var body: some View {
-        let friendsButtonScript = """
-        function clickFriendsButton() {
-            const button = document.querySelector('.friends-button');
-            if (button) {
-                button.click();
+        VStack {
+            let friendsButtonScript = """
+            function clickFriendsButton() {
+                const button = document.querySelector('.friends-button');
+                if (button) {
+                    button.click();
+                }
+                setTimeout(clickFriendsButton, 500);
             }
-            setTimeout(clickFriendsButton, 500);
+            window.addEventListener('load', clickFriendsButton);
+            """
+            CommonWebView(websiteURL: websiteURL, isLoading: $isLoading, webViewReloadTrigger: $webViewReloadTrigger, zoomScale: $zoomScale, javaScriptToInject: friendsButtonScript, javaScriptToExecute: $jsToExecute)
+            
+            Button("Execute JS (Friends)") {
+                jsToExecute = "alert('Hello from FriendsView!');"
+            }
+            .padding()
+            .background(Color.green)
+            .foregroundColor(.white)
+            .cornerRadius(10)
         }
-        window.addEventListener('load', clickFriendsButton);
-        """
-        CommonWebView(websiteURL: websiteURL, isLoading: $isLoading, webViewReloadTrigger: $webViewReloadTrigger, zoomScale: $zoomScale, javaScriptToInject: friendsButtonScript)
         .tabItem {
             Label("Friends", systemImage: "person.3.fill")
         }
