@@ -8,7 +8,7 @@ struct LocationsView: View {
     @State private var jsToExecute: String? = nil // New state for JS execution
     
     var body: some View {
-        VStack {
+        NavigationStack {
         // 「Show More Locations」ボタンを押し続けるJavaScript
             let js = """
             function clickShowMore() {

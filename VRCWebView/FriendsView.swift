@@ -8,7 +8,7 @@ struct FriendsView: View {
     @State private var jsToExecute: String? = nil // New state for JS execution
     
     var body: some View {
-        VStack {
+        NavigationStack {
             let friendsButtonScript = """
             function clickFriendsButton() {
                 const button = document.querySelector('.friends-button');

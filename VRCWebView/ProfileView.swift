@@ -9,18 +9,19 @@ struct ProfileView: View {
     @State private var editState = false
     
     var body: some View {
-        ZStack {
+        NavigationStack {
             CommonWebView(websiteURL: websiteURL, isLoading: $isLoading, webViewReloadTrigger: $webViewReloadTrigger, zoomScale: $zoomScale, javaScriptToExecute: $jsToExecute)
-        }
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button {
-                    jsToExecute = "document.querySelector('[aria-label=\"Edit Profile\"]').click();"
-                } label: {
-                    Image(systemName: "pencil")
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button {
+                            jsToExecute = "document.querySelector('[aria-label=\"Edit Profile\"]').click();"
+                        } label: {
+                            Image(systemName: "pencil")
+                        }
+                    }
                 }
-            }
         }
+
     }
 }
 

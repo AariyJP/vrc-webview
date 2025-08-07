@@ -8,7 +8,7 @@ struct MessagesView: View {
     @State private var jsToExecute: String? = nil // New state for JS execution
     
     var body: some View {
-        VStack {
+        NavigationStack {
             CommonWebView(websiteURL: websiteURL, isLoading: $isLoading, webViewReloadTrigger: $webViewReloadTrigger, zoomScale: $zoomScale, javaScriptToExecute: $jsToExecute)
         }
     }

@@ -20,12 +20,12 @@ struct CommonWebView: View {
             ScrollView {
                 let screenHeight = UIScreen.main.bounds.height
                 let statusBarHeight = UIApplication.shared.statusBarFrame.height
-                let appHeight = screenHeight - statusBarHeight
+                let appHeight = screenHeight - statusBarHeight  
                 GeometryReader { geometry in
                     WebView(url: websiteURL, isLoading: $isLoading, zoomScale: $zoomScale, reloadTrigger: webViewReloadTrigger, onLoadCompletion: {
                         isLoading = false
                     }, javaScriptToInject: javaScriptToInject, javaScriptToExecute: $javaScriptToExecute) // Pass new parameter
-                    .opacity(isLoading ? 0.25 : 1)
+                    .opacity(isLoading ? 0 : 1)
                     .background(appColor)
                 }
                 .frame(minHeight: appHeight)
