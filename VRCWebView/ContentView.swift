@@ -3,27 +3,27 @@ import SwiftUI
 struct ContentView: View {
     var body: some View {
         TabView {
-//            HomeView()
-                LocationsView()
+            //            HomeView()
+            LocationsView()
                 .tabItem {
                     Label("Locations", systemImage: "map.fill")
                 }
-                FriendsView()
+            FriendsView()
                 .tabItem {
                     Label("Friends", systemImage: "person.3.fill")
                 }
-                MessagesView()
+            MessagesView()
                 .tabItem {
                     Label("Messages", systemImage: "message.fill")
                 }
-                ProfileView()
-            .tabItem {
-                Label("Profile", systemImage: "person.fill")
-            }
-//            SettingsView()
-//                .tabItem {
-//                    Label("Settings", systemImage: "gear")
-//                }
+            ProfileView()
+                .tabItem {
+                    Label("Profile", systemImage: "person.fill")
+                }
+            //            SettingsView()
+            //                .tabItem {
+            //                    Label("Settings", systemImage: "gear")
+            //                }
         }
     }
 }
