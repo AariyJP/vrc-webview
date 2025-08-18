@@ -12,7 +12,7 @@ struct FriendsView: View {
             let friendsButtonScript = """
             function clickFriendsButton() {
                 const button = document.querySelector('.friends-button');
-                if (button) {
+                if (button && location.href.endsWith('home')) {
                     button.click();
                 }
                 setTimeout(clickFriendsButton, 500);
