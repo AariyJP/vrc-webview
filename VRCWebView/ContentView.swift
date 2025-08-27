@@ -1,9 +1,13 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var javaScriptToExecute: String? = nil
+    @State private var webViewReloadTrigger = false
+    @State private var isLoading = true
+    @State private var zoomScale: Double = 1.0
+
     var body: some View {
         TabView {
-            //            HomeView()
             LocationsView()
                 .tabItem {
                     Label("Locations", systemImage: "map.fill")
@@ -24,6 +28,16 @@ struct ContentView: View {
                 .tabItem {
                     Label("Settings", systemImage: "gear")
                 }
+        }
+        .onAppear {
+            // if autoLogin && !username.isEmpty && !password.isEmpty {
+            //     let js = """
+            //     document.querySelector('input[name="username_email"]').value = '\(username)';
+            //     document.querySelector('input[name="password"]').value = '\(password)';
+            //     document.querySelector('button[type="submit"]').click();
+            //     """
+            //     javaScriptToExecute = js
+            // }
         }
     }
 }

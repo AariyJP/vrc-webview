@@ -1,9 +1,12 @@
 import SwiftUI
+import WebKit // Required for WKWebView data deletion
+import Foundation // Required for exit()
 
 struct SettingsView: View {
-    @State private var autoLogin = false
-    @State private var username: String = ""
-    @State private var password: String = ""
+    @AppStorage("autoLogin") private var autoLogin = false
+    @AppStorage("username") private var username: String = ""
+    @AppStorage("password") private var password: String = ""
+    @State private var showingLogoutAlert = false // State to control alert presentation
 
     var body: some View {
         NavigationStack {
@@ -15,10 +18,29 @@ struct SettingsView: View {
                     TextField("ユーザー名", text: $username)
                         .autocapitalization(.none)
                         .disableAutocorrection(true)
-                    SecureField("パスワード", text: $password)
+                    TextField("パスワード", text: $password)
+                    Button(action: {
+                        WKWebsiteDataStore.default().removeData(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(), modifiedSince: Date.distantPast) {
+                            showingLogoutAlert = true
+                        }
+                    }) {
+                        Text("ログアウト")
+                            .foregroundColor(.red)
+                    }
+                }
+                Section {
+                    
                 }
             }
             .navigationTitle("設定")
+            .alert(isPresented: $showingLogoutAlert) { // Alert modifier
+                Alert(
+                    title: Text("ログアウトしました。アプリを終了します。"),
+                    dismissButton: .default(Text("OK")) {
+                        exit(0)
+                    }
+                )
+            }
         }
     }
 }
