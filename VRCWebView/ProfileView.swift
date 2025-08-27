@@ -19,6 +19,8 @@ struct ProfileView: View {
                         }
                     }
                 }
+                .navigationTitle("Profile")
+                .toolbarTitleDisplayMode(.inline)
         }
 
     }

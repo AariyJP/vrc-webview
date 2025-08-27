@@ -20,6 +20,8 @@ struct FriendsView: View {
             window.addEventListener('load', clickFriendsButton);
             """
             CommonWebView(websiteURL: websiteURL, isLoading: $isLoading, webViewReloadTrigger: $webViewReloadTrigger, zoomScale: $zoomScale, javaScriptToInject: friendsButtonScript, javaScriptToExecute: $jsToExecute)
+                .navigationTitle("Friends")
+                .toolbarTitleDisplayMode(.inline)
         }
     }
 }

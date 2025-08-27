@@ -10,6 +10,8 @@ struct MessagesView: View {
     var body: some View {
         NavigationStack {
             CommonWebView(websiteURL: websiteURL, isLoading: $isLoading, webViewReloadTrigger: $webViewReloadTrigger, zoomScale: $zoomScale, javaScriptToExecute: $jsToExecute)
+                .navigationTitle("Messages")
+                .toolbarTitleDisplayMode(.inline)
         }
     }
 }

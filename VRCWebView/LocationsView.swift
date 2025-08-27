@@ -53,6 +53,8 @@ struct LocationsView: View {
 //                """
 //            }
             CommonWebView(websiteURL: websiteURL, isLoading: $isLoading, webViewReloadTrigger: $webViewReloadTrigger, zoomScale: $zoomScale, javaScriptToInject: js, javaScriptToExecute: $jsToExecute)
+                .navigationTitle("Locations")
+                .toolbarTitleDisplayMode(.inline)
         }
     }
 }

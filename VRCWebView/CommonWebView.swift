@@ -28,7 +28,7 @@ struct CommonWebView: View {
                     .opacity(isLoading ? 0 : 1)
                     .background(appColor)
                 }
-                .frame(minHeight: appHeight - 60)
+                .frame(minHeight: appHeight - 130)
                 .background(appColor)
             }
             .ignoresSafeArea(edges: .bottom)
