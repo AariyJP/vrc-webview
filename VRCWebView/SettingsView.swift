@@ -19,6 +19,8 @@ struct SettingsView: View {
                         .autocapitalization(.none)
                         .disableAutocorrection(true)
                     TextField("パスワード", text: $password)
+                }
+                Section {
                     Button(action: {
                         WKWebsiteDataStore.default().removeData(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(), modifiedSince: Date.distantPast) {
                             showingLogoutAlert = true
@@ -27,9 +29,6 @@ struct SettingsView: View {
                         Text("ログアウト")
                             .foregroundColor(.red)
                     }
-                }
-                Section {
-                    
                 }
             }
             .navigationTitle("設定")

@@ -11,7 +11,7 @@ struct ProfileView: View {
         NavigationStack {
             CommonWebView(websiteURL: websiteURL, isLoading: $isLoading, webViewReloadTrigger: $webViewReloadTrigger, zoomScale: $zoomScale, javaScriptToExecute: $jsToExecute)
                 .toolbar {
-                    ToolbarItem(placement: .navigationBarTrailing) {
+                    ToolbarItem(placement: .primaryAction) {
                         Button {
                             jsToExecute = "document.querySelector('[aria-label=\"Edit Profile\"]').click();"
                         } label: {
